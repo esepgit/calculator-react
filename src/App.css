@@ -1,0 +1,65 @@
+body {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#calculator {
+  height: 520px; 
+  width: 300px;
+}
+
+#display-container {
+    width: 300px;
+    height: 150px;
+    background-color: snow;
+    border: 1px solid black;
+}
+
+#operations {
+    height: 50px;
+    width: 300px;
+}
+
+#display {
+    width: 300px;
+    height: 100px;
+    border: 1px solid black;
+}
+
+#keys {
+    width: 300px;
+    height: 370px;
+}
+
+#clear {
+    width: 150px;
+    height: 74px;
+    font-size: 18px;
+}
+
+.digit {
+    width: 75px;
+    height: 74px;
+    font-size: 18px;
+}
+
+.operation {
+    width: 75px;
+    height: 74px;
+    font-size: 18px;
+}
+
+#zero {
+    width: 150px;
+    height: 74px;
+    font-size: 18px;
+}
+
+#equals {
+    width: 75px;
+    height: 74px;
+    background-color: rgb(58, 58, 248);
+    color: snow;
+}
