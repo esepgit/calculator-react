@@ -19,10 +19,14 @@ function App() {
   }
 
   const handleClickOperation = (op) => {
-    if (!count.includes('X') && !count.includes('+') && !count.includes('-') && !count.includes('/'))
+    //user history 13 validar la entrada de operador - dsp de otro operador para numero negativo
+    if (!count.includes('X') && !count.includes('+') && !count.includes('-') && !count.includes('/')) {
     setCount(count.toString() + op)
     setAuxNumber('')
+  } else if (count[count.length - 1] == '+' || count[count.length - 1] == '-' || count[count.length - 1] == 'X'|| count[count.length - 1] == '/') {
+    setCount(count.slice(0, count.length - 1) + op)
   }
+}
 
   const handleClickTotal = () => {
     if (count.includes('+') || count.includes('-') || count.includes('/') || count.includes('X')) {
