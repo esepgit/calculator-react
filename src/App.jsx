@@ -9,13 +9,15 @@ function App() {
   const handleClear = () => {setCount('0')}
 
   const handleClickDigit = (digit) => {
-    if (count === '0') {
-      setCount(digit)
-      setAuxNumber(digit)
-    } else {
-      setCount(count.toString() + digit)
-      setAuxNumber(auxNumber.concat(digit))
-    }
+    if (count.length < 20) {
+      if (count === "0") {
+        setCount(digit);
+        setAuxNumber(digit);
+      } else {
+        setCount(count.toString() + digit);
+        setAuxNumber(auxNumber.concat(digit));
+      }
+    } 
   }
 
   const handleClickOperation = (op) => {
@@ -23,8 +25,24 @@ function App() {
     if (!count.includes('X') && !count.includes('+') && !count.includes('-') && !count.includes('/')) {
     setCount(count.toString() + op)
     setAuxNumber('')
-  } else if (count[count.length - 1] == '+' || count[count.length - 1] == '-' || count[count.length - 1] == 'X'|| count[count.length - 1] == '/') {
-    setCount(count.slice(0, count.length - 1) + op)
+  } else {
+    const last = count[count.length - 1];
+    const secondLast = count[count.length -2];
+      if (
+        (last == "+" ||
+        last == "-" ||
+        last == "X" ||
+        last == "/") &&
+        (secondLast != "+" &&
+        secondLast != "-" &&
+        secondLast != "X" &&
+        secondLast != "/") &&
+        op != '-'
+      ) {
+        setCount(count.slice(0, count.length - 1) + op);
+      } else if (op == '-' && secondLast != '+' && secondLast != '-' && secondLast != 'X' && secondLast != '/' ){
+        setCount(count + op)
+      }
   }
 }
 
@@ -53,13 +71,19 @@ function App() {
       }
     }
     
-    setAuxNumber('0')
+    setAuxNumber(count)
   }
 
   const handleClickDecimal = () => {
-    if (!auxNumber.includes('.')) {
-      setCount(count.concat('.'))
-      setAuxNumber(auxNumber.concat('.'))
+    if (
+      !auxNumber.includes(".") &&
+      count[count.length - 1] !== "+" &&
+      count[count.length - 1] !== "-" &&
+      count[count.length - 1] !== "X" &&
+      count[count.length - 1] !== "/"
+    ) {
+      setCount(count.concat("."));
+      setAuxNumber(auxNumber.concat("."));
     }
   }
 
