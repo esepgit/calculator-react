@@ -60,7 +60,7 @@ function App() {
           setCount(count.slice(0, count.length - 2) + op);
        } else {
         let result = handleClickTotal();
-        console.log(result);
+        console.log('here',result);
         setCount(result + op)
        }
       //else {
@@ -81,31 +81,34 @@ function App() {
     if (count.includes('+') || count.includes('-') || count.includes('/') || count.includes('X')) {
       if (/.+[+\-X/].+/g.test(count)) {
         const first = parseFloat(
-          count.slice(0, count.indexOf(count.match(/(?<=.)\D/g)))
+          count.slice(0, count.indexOf(count.match(/(?<=\d)[+\-X/]/g)))
         ).toFixed(4);
         const second = parseFloat(
-          count.slice(count.indexOf(count.match(/(?<=.)\D/g)) + 1)
+          count.slice(count.indexOf(count.match(/(?<=\d)[+\-X/]/g)) + 1)
         ).toFixed(4);
 
-        //busca un caracter no numerico que tenga algun caracter delante (solo coincide + en -n+m)
-        const operation = count.match(/(?<=.)\D/g);
+        //busca + or - or X or / que tenga algun caracter delante (solo coincide + en -n+m)
+        const operation = count.match(/(?<=\d)[+\-X/]/g);
 
         
         if (operation == "+") {
           result = String(Number(first) + Number(second));
-          console.log(first)
+          console.log('first',first)
           setCount(result);
         } else if (operation == "-") {
+          console.log('second',Number(second))
           result = String(Number(first) - Number(second));
+          console.log('res', first - second)
           setCount(result);
         } else if (operation == "X") {
           result = String(Number(first) * Number(second));
+          console.log('X second', second)
           setCount(result);
         } else if (operation == '/') {
           result = String(Number(first) / Number(second));
           setCount(result);
         } else {
-          console.log(operation)
+          console.log('op',operation)
         }
       }
     }
