@@ -22,7 +22,7 @@ function App() {
 
   const handleClickOperation = (op) => {
     //si no incluye un operador, concatenar el operador
-    if (!count.includes('X') && !count.includes('+') && count != '-' && !count.includes('/') && count != 0) {
+    if (!count.includes('X') && !count.includes('+') && !/(?<=.)-/g.test(count) && !count.includes('/') && count != 0) {
     setCount(count.toString() + op)
     setAuxNumber('')
     //sí incluye un operador
