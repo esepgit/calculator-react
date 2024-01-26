@@ -21,13 +21,15 @@ function App() {
   }
 
   const handleClickOperation = (op) => {
-    //user history 13 validar la entrada de operador - dsp de otro operador para numero negativo
-    if (!count.includes('X') && !count.includes('+') && !count.includes('-') && !count.includes('/')) {
+    //si no incluye un operador, concatenar el operador
+    if (!count.includes('X') && !count.includes('+') && count != '-' && !count.includes('/') && count != 0) {
     setCount(count.toString() + op)
     setAuxNumber('')
+    //sí incluye un operador
   } else {
     const last = count[count.length - 1];
     const secondLast = count[count.length -2];
+    //incluye sólo 1 operador al último y op no es -
       if (
         (last == "+" ||
         last == "-" ||
@@ -39,32 +41,69 @@ function App() {
         secondLast != "/") &&
         op != '-'
       ) {
+        //reemplaza el último operador por op, excepto para -
         setCount(count.slice(0, count.length - 1) + op);
-      } else if (op == '-' && secondLast != '+' && secondLast != '-' && secondLast != 'X' && secondLast != '/' ){
+        //incluye un operador en seconLast, pero estoy pulsando -
+      } else if (op == '-' && secondLast != '+' && secondLast != '-' && secondLast != 'X' && secondLast != '/' && last != 0 ){
+        //escribe un - despues de un operador
         setCount(count + op)
-      }
+        //incluye un operador y last es -
+       } else if (
+         last == '-' &&
+         (secondLast == "+" ||
+         secondLast == "-" ||
+         secondLast == "X" ||
+         secondLast == "/")
+       ) {
+        console.log("acu");
+        //reemplaza los dos últimos operadores por op
+          setCount(count.slice(0, count.length - 2) + op);
+       } else {
+        let result = handleClickTotal();
+        console.log(result);
+        setCount(result + op)
+       }
+      //else {
+      //   //el último operador es - y hay otro operador al lado
+    
+      //       //reemplaza el último operador
+      //       setCount(count.slice(0, count.length - 1) + op);
+        
+      // } {
+      //   //para que arroje resultado si tengo n+x y se presiona otro operador
+      //   handleClickTotal();
+      // }
   }
 }
 
   const handleClickTotal = () => {
+    let result = "";
     if (count.includes('+') || count.includes('-') || count.includes('/') || count.includes('X')) {
       if (/.+[+\-X/].+/g.test(count)) {
         const first = parseFloat(
-          count.slice(0, count.indexOf(count.match(/[+\-X/]/)))
+          count.slice(0, count.indexOf(count.match(/(?<=.)\D/g)))
         ).toFixed(4);
         const second = parseFloat(
-          count.slice(count.indexOf(count.match(/[+\-X/]/)) + 1)
+          count.slice(count.indexOf(count.match(/(?<=.)\D/g)) + 1)
         ).toFixed(4);
-        const operation = count.match(/[+\-X/]/);
 
+        //busca un caracter no numerico que tenga algun caracter delante (solo coincide + en -n+m)
+        const operation = count.match(/(?<=.)\D/g);
+
+        
         if (operation == "+") {
-          setCount(String(Number(first) + Number(second)));
+          result = String(Number(first) + Number(second));
+          console.log(first)
+          setCount(result);
         } else if (operation == "-") {
-          setCount(String(Number(first) - Number(second)));
+          result = String(Number(first) - Number(second));
+          setCount(result);
         } else if (operation == "X") {
-          setCount(String(Number(first) * Number(second)));
+          result = String(Number(first) * Number(second));
+          setCount(result);
         } else if (operation == '/') {
-          setCount(String(Number(first) / Number(second)));
+          result = String(Number(first) / Number(second));
+          setCount(result);
         } else {
           console.log(operation)
         }
@@ -72,6 +111,7 @@ function App() {
     }
     
     setAuxNumber(count)
+    return result;
   }
 
   const handleClickDecimal = () => {
